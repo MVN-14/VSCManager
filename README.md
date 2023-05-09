@@ -1,4 +1,4 @@
-# VSCManager
+# VSCManager for Windows
 A Visual Studio Code workspace manager to easily keep track of and open workspaces in VS Code in one click!
 
 
