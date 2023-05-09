@@ -5,9 +5,9 @@
 
 #include <wx/stattext.h>
 #include <wx/msgdlg.h>
+#include <wx/sizer.h>
 
 #include <fstream>
-#include <sstream>
 
 namespace {
 	wxString GetFolderNameFromPath(wxString const &path) {
@@ -22,14 +22,11 @@ namespace {
 
 WorkspaceListPanel::WorkspaceListPanel(wxWindow *parent) 
 	: wxScrolledWindow(parent) {
+
 	mainSizer_ = new wxBoxSizer(wxVERTICAL);
-	SetMinSize(wxSize(GetMinSize().x, 1000));
 	loadWorkspaces_();
-
-	SetScrollbars(1, 5, 50, 0);
-
-	//SetRowCount(mainSizer_->GetItemCount());
 	SetSizer(mainSizer_);
+	SetScrollbars(1, 5, 50, 0);
 }
 
 void WorkspaceListPanel::addPanelItem_(wxString const &workspaceName, wxString const &path) {

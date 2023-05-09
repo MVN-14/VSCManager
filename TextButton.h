@@ -1,6 +1,7 @@
 #pragma once
 
 #include <wx/stattext.h>
+
 #include "def.h"
 
 class TextButton : public wxStaticText {

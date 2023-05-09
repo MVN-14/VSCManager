@@ -1,9 +1,7 @@
 #pragma once
 #include <wx/vscroll.h>
-#include <wx/sizer.h>
 
-#include <map>
-
+class wxBoxSizer;
 class WorkspaceListItem;
 
 class WorkspaceListPanel : public wxScrolledWindow {

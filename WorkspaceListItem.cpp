@@ -18,9 +18,7 @@ WorkspaceListItem::WorkspaceListItem(wxWindow *parent, wxString const &workspace
 	Bind(wxEVT_ENTER_WINDOW, &WorkspaceListItem::onEnterWindow_, this);
 	Bind(wxEVT_LEAVE_WINDOW, &WorkspaceListItem::onLeaveWindow_, this);
 	Bind(wxEVT_LEFT_UP, &WorkspaceListItem::onClick_, this);
-	
-	wxBoxSizer *mainSizer = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer *textSizer = new wxBoxSizer(wxVERTICAL);
+
 
 	wxStaticText *workspaceText = new wxStaticText(this, wxID_ANY, workspaceName, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE_VERTICAL | wxALIGN_CENTRE_HORIZONTAL);
 	workspaceText->SetFont(workspaceText->GetFont().Scale(1.5));
@@ -32,6 +30,9 @@ WorkspaceListItem::WorkspaceListItem(wxWindow *parent, wxString const &workspace
 
 	TextButton *removeButton = new TextButton(this, wxString(" Del "), wxSize(40, 30), *wxRED, *wxBLACK, 1.5f);
 	removeButton->Bind(wxEVT_LEFT_UP, &WorkspaceListItem::remove_, this);
+
+	wxBoxSizer *mainSizer = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer *textSizer = new wxBoxSizer(wxVERTICAL);
 
 	textSizer->Add(workspaceText, 1, wxLEFT, 10);
 	textSizer->Add(folderPathText, 1, wxLEFT, 10);
