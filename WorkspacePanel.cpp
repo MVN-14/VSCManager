@@ -9,6 +9,7 @@
 #include <wx/msgdlg.h>
 
 #include <fstream>
+#include <sstream>
 
 namespace {
 	wxString GetFolderNameFromPath(wxString const &path) {
@@ -28,14 +29,8 @@ WorkspacePanel::WorkspacePanel(wxWindow *parent)
 
 	mainSizer_ = new wxBoxSizer(wxVERTICAL);
 
-	wxStaticText *addButton = new wxStaticText(this, wxID_ANY, wxString(" + "));
-	addButton->SetBackgroundColour(BUTTON_COLOUR);
-	addButton->SetForegroundColour(*wxBLACK);
-	addButton->SetFont(addButton->GetFont().Bold().Scale(2.0f));
-	addButton->SetSize(addButton->GetSize().GetWidth(), 40);
+	TextButton *addButton = new TextButton(this, wxString("Add"), wxSize(60, 30), BUTTON_COLOUR, *wxGREEN, 1.5f);
 	addButton->Bind(wxEVT_LEFT_UP, &WorkspacePanel::onAddWorkspace, this);
-	addButton->Bind(wxEVT_ENTER_WINDOW, [this](wxMouseEvent &) {SetCursor(wxCURSOR_HAND); });
-	addButton->Bind(wxEVT_LEAVE_WINDOW, [this](wxMouseEvent &) {SetCursor(wxCURSOR_ARROW); });
 
 	wxStaticText *title = new wxStaticText(this, wxID_ANY, wxString("Your Workspaces"));
 	title->SetFont(title->GetFont().Scale(2).Bold());
@@ -44,9 +39,13 @@ WorkspacePanel::WorkspacePanel(wxWindow *parent)
 	headerSizer->Add(title, 0, wxALL | wxALIGN_CENTER_VERTICAL, 10);
 	headerSizer->Add(addButton, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-	mainSizer_->Add(headerSizer);
-
+	listSizer_ = new wxBoxSizer(wxVERTICAL);
+	listPanel_ = new wxPanel(this);
 	loadWorkspaces();
+	listPanel_->SetSizer(listSizer_);
+
+	mainSizer_->Add(headerSizer);
+	mainSizer_->Add(listPanel_, 1, wxEXPAND);
 
 	SetSizer(mainSizer_);
 }
@@ -64,11 +63,15 @@ void WorkspacePanel::onAddWorkspace(wxMouseEvent &) {
 }
 
 void WorkspacePanel::addPanelItem(wxString const &workspaceName, wxString const &path) {
-	mainSizer_->Add(new WorkspacePanelItem(this, workspaceName, path), 1, wxEXPAND);
+	listSizer_->Add(new WorkspacePanelItem(listPanel_, workspaceName, path, [this, path] {
+		removePanelItem(path);
+		}), 1, wxEXPAND
+	);
 	GetParent()->Layout(); 
 }
 
 void WorkspacePanel::loadWorkspaces() {
+	listSizer_->Clear(true);
 	std::ifstream stream(FOLDER_LIST_PATH);
 
 	if (!stream) {
@@ -78,18 +81,34 @@ void WorkspacePanel::loadWorkspaces() {
 	
 	std::string path;
 	while (std::getline(stream, path)) {
-		if (path.empty())
-			continue;
-		addPanelItem(GetFolderNameFromPath(path), path);
+		if (!path.empty())
+			addPanelItem(GetFolderNameFromPath(path), path);
 	}
+	//listPanel_->SetSizer(panelSizer_);
+	GetParent()->Layout();
 }
 
-bool WorkspacePanel::writeWorkspaceToFile(wxString const &path) {
-	std::ofstream ostream(FOLDER_LIST_PATH, std::ios_base::app);
+void WorkspacePanel::writeWorkspaceToFile(wxString const &path) {
+	std::ofstream ofstream(FOLDER_LIST_PATH, std::ios_base::app);
+	if(ofstream)
+		ofstream << path << '\n';
+}
 
-	if (!ostream) 
-		return false;
+void WorkspacePanel::removePanelItem(wxString const &path) {
+	std::ifstream oldFile(FOLDER_LIST_PATH);
+	std::ofstream newFile("temp.txt");
+	if (!oldFile || !newFile)
+		return;
 
-	ostream << path << '\n';
-	return true;
+	std::string line;
+	while (std::getline(oldFile, line)) 
+		if (line != path) 
+			newFile << line << '\n';
+
+	oldFile.close();
+	newFile.close();
+
+	remove(FOLDER_LIST_PATH);
+	rename("temp.txt", FOLDER_LIST_PATH);
+	loadWorkspaces();
 }
