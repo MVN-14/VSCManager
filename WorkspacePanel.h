@@ -14,7 +14,7 @@ public:
 private:
 	wxBoxSizer *mainSizer_{nullptr};
 	wxBoxSizer *listSizer_{nullptr};	
-	//wxPanel *listPanel_{nullptr};
+	wxPanel *listPanel_{nullptr};
 
 	void onAddWorkspace(wxMouseEvent &);
 	void addPanelItem(wxString const &workspaceName, wxString const &path);
