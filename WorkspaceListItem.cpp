@@ -1,5 +1,5 @@
-#include "WorkspacePanelItem.h"
-#include "WorkspacePanel.h"
+#include "WorkspaceListItem.h"
+#include "WorkspaceListPanel.h"
 #include "TextButton.h"
 #include "def.h"
 
@@ -9,29 +9,29 @@
 #include <wx/button.h>
 
 
-WorkspacePanelItem::WorkspacePanelItem(wxWindow *parent, wxString const &workspaceName, wxString const &folderPath, std::function<void()> onRemove)
+WorkspaceListItem::WorkspaceListItem(wxWindow *parent, wxString const &workspaceName, wxString const &folderPath, std::function<void()> onRemove)
 	: path_(folderPath), wxPanel(parent, wxID_ANY) {
 	
 	onRemove_ = onRemove;
 	SetBackgroundColour(PANEL_ITEM_COLOUR);
 	SetForegroundColour(*wxWHITE);
-	Bind(wxEVT_ENTER_WINDOW, &WorkspacePanelItem::onEnterWindow, this);
-	Bind(wxEVT_LEAVE_WINDOW, &WorkspacePanelItem::onLeaveWindow, this);
-	Bind(wxEVT_LEFT_UP, &WorkspacePanelItem::onClick, this);
+	Bind(wxEVT_ENTER_WINDOW, &WorkspaceListItem::onEnterWindow_, this);
+	Bind(wxEVT_LEAVE_WINDOW, &WorkspaceListItem::onLeaveWindow_, this);
+	Bind(wxEVT_LEFT_UP, &WorkspaceListItem::onClick_, this);
 	
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer *textSizer = new wxBoxSizer(wxVERTICAL);
 
 	wxStaticText *workspaceText = new wxStaticText(this, wxID_ANY, workspaceName, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE_VERTICAL | wxALIGN_CENTRE_HORIZONTAL);
 	workspaceText->SetFont(workspaceText->GetFont().Scale(1.5));
-	workspaceText->Bind(wxEVT_ENTER_WINDOW, &WorkspacePanelItem::onEnterWindow, this);
+	workspaceText->Bind(wxEVT_ENTER_WINDOW, &WorkspaceListItem::onEnterWindow_, this);
 
 	wxStaticText *folderPathText = new wxStaticText(this, wxID_ANY, path_);
 	folderPathText->SetFont(folderPathText->GetFont().Scale(1.2f));
-	folderPathText->Bind(wxEVT_ENTER_WINDOW, &WorkspacePanelItem::onEnterWindow, this);
+	folderPathText->Bind(wxEVT_ENTER_WINDOW, &WorkspaceListItem::onEnterWindow_, this);
 
 	TextButton *removeButton = new TextButton(this, wxString(" Del "), wxSize(40, 30), *wxRED, *wxBLACK, 1.5f);
-	removeButton->Bind(wxEVT_LEFT_UP, &WorkspacePanelItem::onRemove, this);
+	removeButton->Bind(wxEVT_LEFT_UP, &WorkspaceListItem::remove_, this);
 
 	textSizer->Add(workspaceText, 1, wxLEFT, 10);
 	textSizer->Add(folderPathText, 1, wxLEFT, 10);
@@ -42,22 +42,22 @@ WorkspacePanelItem::WorkspacePanelItem(wxWindow *parent, wxString const &workspa
 	SetSizer(mainSizer);
 }
 
-void WorkspacePanelItem::onEnterWindow(wxMouseEvent &event) {
+void WorkspaceListItem::onEnterWindow_(wxMouseEvent &event) {
 	SetBackgroundColour(PANEL_ITEM_HOVER_COLOUR);
 	SetCursor(wxCURSOR_HAND);
 	Refresh();
 }
 
-void WorkspacePanelItem::onLeaveWindow(wxMouseEvent &) {
+void WorkspaceListItem::onLeaveWindow_(wxMouseEvent &) {
 	SetBackgroundColour(PANEL_ITEM_COLOUR);
 	SetCursor(wxCURSOR_ARROW);
 	Refresh();
 }
 
-void WorkspacePanelItem::onClick(wxMouseEvent &) {
+void WorkspaceListItem::onClick_(wxMouseEvent &) {
 	std::system("code " + path_);
 }
 
-void WorkspacePanelItem::onRemove(wxMouseEvent &) {
+void WorkspaceListItem::remove_(wxMouseEvent &) {
 	onRemove_();
 }
