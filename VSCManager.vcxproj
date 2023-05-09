@@ -137,15 +137,15 @@
     <ClInclude Include="def.h" />
     <ClInclude Include="MainPanel.h" />
     <ClInclude Include="TextButton.h" />
-    <ClInclude Include="WorkspacePanel.h" />
-    <ClInclude Include="WorkspacePanelItem.h" />
+    <ClInclude Include="WorkspaceListPanel.h" />
+    <ClInclude Include="WorkspaceListItem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="MainPanel.cpp" />
     <ClCompile Include="TextButton.cpp" />
-    <ClCompile Include="WorkspacePanel.cpp" />
-    <ClCompile Include="WorkspacePanelItem.cpp" />
+    <ClCompile Include="WorkspaceListPanel.cpp" />
+    <ClCompile Include="WorkspaceListItem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -18,19 +18,19 @@
     <ClInclude Include="App.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MainPanel.h">
+    <ClInclude Include="WorkspaceListItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WorkspacePanelItem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WorkspacePanel.h">
+    <ClInclude Include="WorkspaceListPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="def.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,10 +41,10 @@
     <ClCompile Include="MainPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WorkspacePanelItem.cpp">
+    <ClCompile Include="WorkspaceListItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WorkspacePanel.cpp">
+    <ClCompile Include="WorkspaceListPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextButton.cpp">
