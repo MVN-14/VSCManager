@@ -58,10 +58,23 @@ void WorkspaceListPanel::loadWorkspaces_() {
 
 void WorkspaceListPanel::removePathFromFolderList_(wxString const &path) {
 	std::string folderListPath = getFolderListPath();
+	if (folderListPath.empty()) {
+		wxDialog alert(this, wxID_ANY, "Error getting folder list path");
+		alert.ShowModal();
+	}
+
 	std::ifstream oldFile(folderListPath);
-	std::ofstream newFile("temp.txt");
-	if (!oldFile || !newFile)
+	std::ofstream newFile(folderListPath + ".temp.txt");
+	if (!newFile) {
+		wxDialog alert(this, wxID_ANY, "Error creating temp index file");
+		alert.ShowModal();
 		return;
+	}
+	if (!oldFile) {
+		wxDialog alert(this, wxID_ANY, "Error opening old index file");
+		alert.ShowModal();
+		return;
+	}
 
 	std::string line;
 	while (std::getline(oldFile, line)) 
@@ -71,8 +84,17 @@ void WorkspaceListPanel::removePathFromFolderList_(wxString const &path) {
 	oldFile.close();
 	newFile.close();
 
-	remove(folderListPath.c_str());
-	rename("temp.txt", folderListPath.c_str());
+	if (0 != remove(folderListPath.c_str())) {
+		wxDialog alert(this, wxID_ANY, "Error removing old index file.");
+		alert.ShowModal();
+		return;
+	}
+	if (0 != rename((folderListPath + ".temp.txt").c_str(), folderListPath.c_str())) {
+		wxDialog alert(this, wxID_ANY, "Error renaming new index file.");
+		alert.ShowModal();
+		return;
+	}
+
 	loadWorkspaces_();
 }
 
