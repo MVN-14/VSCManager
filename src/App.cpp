@@ -9,7 +9,7 @@ bool App::OnInit() {
 
 	wxFrame *mainFrame = new wxFrame(nullptr,
 								     wxID_ANY,
-									 std::move(wxString("VSC Manager")),
+									 std::move(wxString("VSC Manager (0.0.1)")),
 									 wxDefaultPosition,
 									 std::move(wxSize(800, 600)));
 

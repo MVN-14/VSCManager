@@ -1,19 +1,12 @@
 #include "MainPanel.h"
 #include "WorkspaceListPanel.h"
 #include "TextButton.h"
-#include <wx/dirdlg.h>
 #include "def.h"
+#include "ioHelper.h"
 
 #include <fstream>
+#include <wx/dirdlg.h>
 #include <wx/sizer.h>
-
-namespace {
-	void writeWorkspaceToFile(wxString const &path) {
-		std::ofstream ofstream(FOLDER_LIST_PATH, std::ios_base::app);
-		if (ofstream)
-			ofstream << path << '\n';
-	}
-}
 
 MainPanel::MainPanel(wxWindow *parent) 
 	: wxPanel(parent) {
