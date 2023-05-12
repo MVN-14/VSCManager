@@ -1,7 +1,17 @@
 # VSCManager for Windows
-A Visual Studio Code workspace manager to easily keep track of and open workspaces in VS Code in one click!
 
+### A Visual Studio Code workspace manager to easily keep track of and open workspaces in VS Code in one click!
 
-![image](https://github.com/MVN-14/VSCManager/assets/117686444/a0132de0-a5b9-44ea-a7fe-fb69303a117f)
+<br/>
 
-Written with C++20 and wxWidgets 3.2.1 GUI framework
+## Download
+
+[www.vscmanager.net](http://www.vscmanager.net)
+
+### Written with C++20 leveraging [wxWidgets](https://www.wxwidgets.org/) GUI framework
+
+<br/>
+
+![image](./screenshots/screenshot1.png)
+
+(if unfamiliar with wxWidgets and worried about the "new" allocations in the code, the ownership is passed to the window hierarchy, so the memory is handled by the framework on destruction)
